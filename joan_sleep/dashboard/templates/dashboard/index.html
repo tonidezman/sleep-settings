@@ -1,11 +1,14 @@
 {% extends "dashboard/base.html" %}
 
 {% block content %}
-<h1>Joan Sleep</h1>
-<h3>Dashboard</h3>
+<div class="center-align">
+  <h2>Joan Sleep</h2>
+  <h5>Dashboard</h5>
+</div>
 <form action="" method="post">
+  {% load material_form %}
   {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" value="Save">
+  {% form form=form %}{% endform %}
+  <button type="submit" class="waves-effect waves-light btn">Save</button>
 </form>
 {% endblock %}

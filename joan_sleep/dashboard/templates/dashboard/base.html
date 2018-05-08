@@ -2,18 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  {% include 'material/includes/material_css.html' %}
+  {% include 'material/includes/material_js.html' %}
   <title>Joan Sleep - Dashboard</title>
 </head>
 <body>
-  {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-  {% endif %}
+  <div class="container">
+    {% if messages %}
+      <ul class="messages center-align">
+          {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }} hoverable card-panel lighten-4"{% endif %}>{{ message }}</li>
+          {% endfor %}
+      </ul>
+    {% endif %}
 
-  {% block content %}
-  {% endblock %}
+    {% block content %}
+    {% endblock %}
+    </div>
 </body>
 </html>
