@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 from .forms import SleepSettingsForm
@@ -21,6 +22,9 @@ class DashboardView(TemplateView):
         if form.is_valid():
             if self._at_least_one_day_chosen(form.cleaned_data):
                 form.save()
+                messages.success(request, "Settings were successfully saved")
+            else:
+                messages.error(request, "You need to choose at least one weekday!")
             return redirect('dashboard-settings')
         return render(request, self.template_name, {'form': form})
 
