@@ -30,6 +30,15 @@ class SleepSettingTest(TestCase):
         with patch.object(timezone, 'now', return_value=datetime.datetime(2018, 5, 10, 22, 00)) as mock_now:
             self.assertEqual(SleepSetting.should_sleep(), "2018-05-12T07:00-19:00")
 
+    def test_datetime_for_the_same_date_but_little_later_as_in_settings_next_week(self):
+        setting = SleepSetting.objects.first()
+        setting.monday = False
+        setting.thursday = True
+        setting.saturday = False
+        setting.save()
+        with patch.object(timezone, 'now', return_value=datetime.datetime(2018, 5, 10, 22, 00)) as mock_now:
+            self.assertEqual(SleepSetting.should_sleep(), "2018-05-17T07:00-19:00")
+
     def test_datetime_object_until_device_should_be_asleep(self):
         with patch.object(timezone, 'now', return_value=datetime.datetime(2018, 5, 8, 11, 00)) as mock_now:
             self.assertEquals(SleepSetting.should_sleep(), "2018-05-10T07:00-19:00")

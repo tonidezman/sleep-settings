@@ -32,16 +32,16 @@ class SleepSetting(models.Model):
                 return False
             elif now.time() < setting.from_time:
                 return setting._format_datetime(now)
-        date = setting._find_next_awake_day()
+        date = setting._find_next_awake_day(now)
         return setting._format_datetime(date)
 
-    def _find_next_awake_day(self):
+    def _find_next_awake_day(self, date):
         weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-        current_weekday = timezone.now().weekday()
-        for offset in range(1, 6):
+        current_weekday = date.weekday()
+        for offset in range(1, 8):
             indx = (offset + current_weekday) % 7
             if getattr(self, weekdays[indx]):
-                return timezone.now() + timedelta(offset)
+                return date + timedelta(offset)
         raise Exception("Settings should have at least one weekday chosen.")
 
     def _format_datetime(self, date):
