@@ -27,7 +27,7 @@ class DashboardView(TemplateView):
         if form.is_valid():
             if self._at_least_one_day_chosen(form.cleaned_data):
                 form.save()
-                messages.success(request, "Settings were successfully saved", extra_tags="teal")
+                messages.success(request, "Settings were successfully saved.", extra_tags="teal")
             else:
                 messages.error(request, "You need to choose at least one weekday!", extra_tags="pink")
             return redirect('dashboard-settings')
