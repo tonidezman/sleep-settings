@@ -1,4 +1,5 @@
 from django.utils import timezone
+from datetime import timedelta
 from django.db import models
 
 class SleepSetting(models.Model):
@@ -18,3 +19,33 @@ class SleepSetting(models.Model):
 
     def __str__(self):
         return f'id: {self.id} from_time: {self.from_time} to_time: {self.to_time}'
+
+    @classmethod
+    def should_sleep(cls):
+        setting = cls.objects.first()
+        now = timezone.now()
+        day_text = now.strftime("%A").lower()
+
+        # here we check if settings date and current date match
+        if getattr(setting, day_text):
+            if setting.from_time <= now.time() <= setting.to_time:
+                return False
+            elif now.time() < setting.from_time:
+                return setting._format_datetime(now)
+        date = setting._find_next_awake_day()
+        return setting._format_datetime(date)
+
+    def _find_next_awake_day(self):
+        weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+        current_weekday = timezone.now().weekday()
+        for offset in range(1, 6):
+            indx = (offset + current_weekday) % 7
+            if getattr(self, weekdays[indx]):
+                return timezone.now() + timedelta(offset)
+        raise Exception("Settings should have at least one weekday chosen.")
+
+    def _format_datetime(self, date):
+        date = date.strftime("%Y-%m-%dT")
+        from_time = self.from_time.strftime("%R")
+        to_time = self.to_time.strftime("%R")
+        return f'{date}{from_time}-{to_time}'
