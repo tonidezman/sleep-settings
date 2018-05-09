@@ -1,3 +1,7 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+import json
 
-# Create your views here.
+def get_sleep(request):
+    data = json.dumps({ 'shouldSleep': False })
+    return HttpResponse(data, content_type='application/json')
