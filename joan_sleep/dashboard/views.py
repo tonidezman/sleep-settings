@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.utils import timezone
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 from .forms import SleepSettingsForm
@@ -12,7 +13,11 @@ class DashboardView(TemplateView):
         self._create_sleep_setting_if_none_present()
         sleep_setting = SleepSetting.objects.filter().values()[0]
         form = SleepSettingsForm(initial=sleep_setting)
-        return render(request, self.template_name, {'form': form})
+        context = {
+            'form': form,
+            'current_time': timezone.now(),
+        }
+        return render(request, self.template_name, context)
 
     def post(self, request):
         self._create_sleep_setting_if_none_present()
