@@ -5,11 +5,11 @@ import moment from 'moment';
 
 class App extends Component {
   deviceState = {
-    isActive: false,
     active: 'Active',
     inactive: 'Inactive'
   };
   state = {
+    isActive: false,
     status: 'Loading...',
     futureTime: '',
     minutes: ''
@@ -28,25 +28,34 @@ class App extends Component {
         const duration = future - now;
         const minutesToGo = Math.floor(duration / 60000);
         this.setState({
-          isActive: true,
+          isActive: false,
           status: this.deviceState.inactive,
           minutes: minutesToGo
         });
       } else {
-        this.setState({ status: this.deviceState.active });
+        this.setState({ status: this.deviceState.active, isActive: true });
       }
     });
   }
 
   render() {
     let minutes = '';
+    let statusColor = '';
     if (this.state.isActive) {
-      minutes = <div>{this.state.minutes} minutes till activation.</div>;
+      statusColor = 'green';
+    } else {
+      minutes = `${this.state.minutes} minutes till activation.`;
+      statusColor = 'red';
     }
     return (
-      <div className="App">
-        <div>Device state: {this.state.status}</div>
-        {minutes}
+      <div className="App container">
+        <div
+          className={`center-align card-panel lighten-4 ${statusColor}`}
+          style={{ width: '300px', margin: '0 auto', marginTop: '100px' }}
+        >
+          Device state: {this.state.status}
+        </div>
+        <p>{minutes}</p>
       </div>
     );
   }
