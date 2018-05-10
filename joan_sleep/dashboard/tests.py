@@ -43,3 +43,17 @@ class SleepSettingTest(TestCase):
     def test_datetime_object_until_device_should_be_asleep_into_next_week(self):
         with patch.object(timezone, 'now', return_value=datetime.datetime(2018, 5, 13, 12, 00)) as mock_now:
             self.assertEquals(SleepSetting.should_sleep(), "2018-05-14T07:00-19:00")
+
+class DashBoardViewTest(TestCase):
+    def setUp(self):
+        setting = SleepSetting()
+        setting.monday = True
+        setting.save()
+
+    def test_dashboard_settings_url(self):
+        res = self.client.get("/dashboard/settings/")
+        self.assertEqual(res.status_code, 200)
+
+    def test_get_sleep_url(self):
+        res = self.client.get("/getSleep/")
+        self.assertEqual(res.status_code, 200)
