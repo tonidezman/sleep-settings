@@ -15,9 +15,6 @@ class SleepSettingTest(TestCase):
         setting.to_time = '19:00'
         setting.save()
 
-    def tearDown(self):
-        SleepSetting.objects.all().delete()
-
     def test_false_when_device_is_awake(self):
         with patch.object(timezone, 'now', return_value=datetime.datetime(2018, 5, 10, 11, 00)) as mock_now:
             self.assertEqual(SleepSetting.should_sleep(), False)
