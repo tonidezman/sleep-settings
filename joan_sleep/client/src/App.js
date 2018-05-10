@@ -4,16 +4,13 @@ import axios from 'axios';
 import moment from 'moment';
 
 class App extends Component {
-  deviceState = {
-    active: 'Active',
-    inactive: 'Inactive'
-  };
   state = {
     isActive: false,
     status: 'Loading...',
     futureTime: '',
     minutes: ''
   };
+  deviceState = { active: 'Active', inactive: 'Inactive' };
   path = 'getSleep/';
   url = 'http://127.0.0.1:8000';
 
