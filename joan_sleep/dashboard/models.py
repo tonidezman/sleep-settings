@@ -48,4 +48,4 @@ class SleepSetting(models.Model):
         date = date.strftime("%Y-%m-%dT")
         from_time = self.from_time.strftime("%R")
         to_time = self.to_time.strftime("%R")
-        return f'{date}{from_time}-{to_time}'
+        return f'{date}{from_time}:00-{to_time}'
