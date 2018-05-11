@@ -67,6 +67,10 @@ CORS_ALLOW_METHODS = (
 
 ROOT_URLCONF = 'joan_sleep.urls'
 
+STATICFILES_DIRS = (
+    os.path.join(os.path.join(BASE_DIR, 'client'), 'build', 'static'),
+)
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
